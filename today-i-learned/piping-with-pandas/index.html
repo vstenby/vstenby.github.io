@@ -1410,7 +1410,8 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="piping-with-pandas">Piping with Pandas<a class="anchor-link" href="#piping-with-pandas">&#182;</a></h1><p>In this article, I'll demonstrate how to use the <code>pipe</code> method of the <code>pandas.DataFrame</code> object. First, we'll want some data to work with. For this article, we'll use the bike sharing dataset from sklearn.</p>
+<h1 id="piping-with-pandas">Piping with Pandas<a class="anchor-link" href="#piping-with-pandas">&#182;</a></h1><p>In this article, I'll demonstrate how to use the <code>pipe</code> method of the <code>pandas.DataFrame</code> object. <code>pipe</code> is really nifty if you want to make your preprocessing code more modular and easier to maintain. It also drastically increases the readability, so the handover of your code becomes much easier!</p>
+<p>For this demonstration, I'll use the dataset below:</p>
 
 </div>
 </div>
@@ -1421,7 +1422,7 @@ Licensed under the Apache License, Version 2.0.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
         <div class="CodeMirror cm-s-jupyter">
@@ -1436,25 +1437,51 @@ Licensed under the Apache License, Version 2.0.
                 </div>
             </clipboard-copy>
         </div>
-            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Index Duration          Date  Pulse  Maxpulse  Calories</span>
+<span class="s2">  0         60  &#39;2020/12/01&#39;    110       130     409.1</span>
+<span class="s2">  1         60  &#39;2020/12/02&#39;    117       145     479.0</span>
+<span class="s2">  2         60  &#39;2020/12/03&#39;    103       135     340.0</span>
+<span class="s2">  3         60  &#39;2020/12/16&#39;     98       120     215.2</span>
+<span class="s2">  4         60  &#39;2020/12/17&#39;    100       120     300.0</span>
+<span class="s2">  5         45  &#39;2020/12/18&#39;     90       112       NaN</span>
+<span class="s2">  6         60  &#39;2020/12/21&#39;    108       131     364.2</span>
+<span class="s2">  7         45           NaN    100       119     282.0</span>
+<span class="s2">  8         60  &#39;2020/12/25&#39;    102       126     334.5</span>
+<span class="s2">  9         60    2020/12/26    100       120     250.0</span>
+<span class="s2">  10        60  &#39;2020/12/27&#39;     92       118     241.0</span>
+<span class="s2">  11        60  &#39;2020/12/28&#39;    103       132       NaN</span>
+<span class="s2">  12        60  &#39;2020/12/29&#39;    100       132     280.0</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-<span class="c1">#Load the iris dataset from sklearn.</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;frame&#39;</span><span class="p">]</span>
-
-<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="c1">#Let&#39;s just get the data in pandas real quick!</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">txt</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-<div id="cell-1" class="clipboard-copy-txt">import numpy as np
-import pandas as pd
+<div id="cell-1" class="clipboard-copy-txt">import pandas as pd
 
-from sklearn.datasets import load_iris
+txt = """
+Index Duration          Date  Pulse  Maxpulse  Calories
+  0         60  '2020/12/01'    110       130     409.1
+  1         60  '2020/12/02'    117       145     479.0
+  2         60  '2020/12/03'    103       135     340.0
+  3         60  '2020/12/16'     98       120     215.2
+  4         60  '2020/12/17'    100       120     300.0
+  5         45  '2020/12/18'     90       112       NaN
+  6         60  '2020/12/21'    108       131     364.2
+  7         45           NaN    100       119     282.0
+  8         60  '2020/12/25'    102       126     334.5
+  9         60    2020/12/26    100       120     250.0
+  10        60  '2020/12/27'     92       118     241.0
+  11        60  '2020/12/28'    103       132       NaN
+  12        60  '2020/12/29'    100       132     280.0
+"""
 
-#Load the iris dataset from sklearn.
-data = load_iris(as_frame=True)['frame']
-
-data.head()</div>
+#Let's just get the data in pandas real quick!
+df = pd.DataFrame([x.split() for x in txt.splitlines()[1:]])
+df.head()</div>
     
         </div>
     </div>
@@ -1472,7 +1499,7 @@ data.head()</div>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[1]:</div>
 
 
 
@@ -1495,53 +1522,59 @@ data.head()</div>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>sepal length (cm)</th>
-      <th>sepal width (cm)</th>
-      <th>petal length (cm)</th>
-      <th>petal width (cm)</th>
-      <th>target</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>5.1</td>
-      <td>3.5</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>0</td>
+      <td>Index</td>
+      <td>Duration</td>
+      <td>Date</td>
+      <td>Pulse</td>
+      <td>Maxpulse</td>
+      <td>Calories</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>4.9</td>
-      <td>3.0</td>
-      <td>1.4</td>
-      <td>0.2</td>
       <td>0</td>
+      <td>60</td>
+      <td>'2020/12/01'</td>
+      <td>110</td>
+      <td>130</td>
+      <td>409.1</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>4.7</td>
-      <td>3.2</td>
-      <td>1.3</td>
-      <td>0.2</td>
-      <td>0</td>
+      <td>1</td>
+      <td>60</td>
+      <td>'2020/12/02'</td>
+      <td>117</td>
+      <td>145</td>
+      <td>479.0</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>4.6</td>
-      <td>3.1</td>
-      <td>1.5</td>
-      <td>0.2</td>
-      <td>0</td>
+      <td>2</td>
+      <td>60</td>
+      <td>'2020/12/03'</td>
+      <td>103</td>
+      <td>135</td>
+      <td>340.0</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>5.0</td>
-      <td>3.6</td>
-      <td>1.4</td>
-      <td>0.2</td>
-      <td>0</td>
+      <td>3</td>
+      <td>60</td>
+      <td>'2020/12/16'</td>
+      <td>98</td>
+      <td>120</td>
+      <td>215.2</td>
     </tr>
   </tbody>
 </table>
@@ -1562,7 +1595,737 @@ data.head()</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Then, I'll write something afterwards.</p>
+<p>This dataset sure needs some cleaning.</p>
+<ul>
+<li>The column names are in the first row.</li>
+<li>The <code>Duration</code> column needs to be cleaned and dates parsed properly.</li>
+<li>We need to deal with missing values.</li>
+</ul>
+<p>Now, the method <code>pipe</code> takes in a function which should take a <code>pd.DataFrame</code> (and perhaps some arguments), and return a <code>pd.DataFrame</code>. Let's try to write a function that first fixes the columns and drops the index, which we don't really care about.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-2">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">def</span> <span class="nf">prepare_column_names</span><span class="p">(</span><span class="n">dataf</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="c1">#Set the columns.</span>
+    <span class="n">dataf</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">dataf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1">#Drop the first row.</span>
+    <span class="n">dataf</span> <span class="o">=</span> <span class="n">dataf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:,]</span>
+
+    <span class="c1">#Drop the index column.</span>
+    <span class="n">dataf</span> <span class="o">=</span> <span class="n">dataf</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Index&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataf</span>
+</pre></div>
+<div id="cell-2" class="clipboard-copy-txt">def prepare_column_names(dataf : pd.DataFrame) -> pd.DataFrame:
+    #Set the columns.
+    dataf.columns = dataf.iloc[0]
+
+    #Drop the first row.
+    dataf = dataf.iloc[1:,]
+
+    #Drop the index column.
+    dataf = dataf.drop(['Index'], axis=1)
+    return dataf</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Let's use the function <code>prepare_column_names</code> on our dataframe.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-3">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>\
+  <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">prepare_column_names</span><span class="p">)</span>\
+  <span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+<div id="cell-3" class="clipboard-copy-txt">df.pipe(lambda x : x.copy())\
+  .pipe(prepare_column_names)\
+  .head()</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Duration</th>
+      <th>Date</th>
+      <th>Pulse</th>
+      <th>Maxpulse</th>
+      <th>Calories</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>60</td>
+      <td>'2020/12/01'</td>
+      <td>110</td>
+      <td>130</td>
+      <td>409.1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>60</td>
+      <td>'2020/12/02'</td>
+      <td>117</td>
+      <td>145</td>
+      <td>479.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>60</td>
+      <td>'2020/12/03'</td>
+      <td>103</td>
+      <td>135</td>
+      <td>340.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>60</td>
+      <td>'2020/12/16'</td>
+      <td>98</td>
+      <td>120</td>
+      <td>215.2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60</td>
+      <td>'2020/12/17'</td>
+      <td>100</td>
+      <td>120</td>
+      <td>300.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>That fixed our first problem! <em>Note that I used <code>pipe(lambda x : x.copy())</code> first. If we hadn't, then it would have altered <code>df</code> itself. You can try and run the code yourself and see what happens without it.</em></p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now, let's write a function that cleans the <code>Date</code> column,</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-4">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">def</span> <span class="nf">clean_datestring</span><span class="p">(</span><span class="n">dataf</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataf</span>
+</pre></div>
+<div id="cell-4" class="clipboard-copy-txt">def clean_datestring(dataf : pd.DataFrame) -> pd.DataFrame:
+    dataf['Date'] = dataf['Date'].str.replace("'", "")
+    return dataf</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>one that sets the dtypes of the dataframe,</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-5">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">def</span> <span class="nf">set_dtypes</span><span class="p">(</span><span class="n">dataf</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+               <span class="n">dtypes</span> <span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="c1">#Set dtypes. Note that this function has an argument too.</span>
+    <span class="c1">#This should be passed to the pipe function when called.</span>
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">dataf</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataf</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataf</span>
+</pre></div>
+<div id="cell-5" class="clipboard-copy-txt">def set_dtypes(dataf : pd.DataFrame, 
+               dtypes : dict) -> pd.DataFrame:
+    #Set dtypes. Note that this function has an argument too.
+    #This should be passed to the pipe function when called.
+    for col, dtype in dtypes.items():
+        dataf[col] = dataf[col].astype(dtype)
+    return dataf</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>one that converts the date from <code>str</code> to <code>datetime64[ns]</code>,</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-6">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">def</span> <span class="nf">convert_date</span><span class="p">(</span><span class="n">dataf</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> 
+                                   <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataf</span>
+</pre></div>
+<div id="cell-6" class="clipboard-copy-txt">def convert_date(dataf : pd.DataFrame) -> pd.DataFrame:
+    dataf['Date'] = pd.to_datetime(dataf['Date'], 
+                                   format='%Y/%m/%d', errors='coerce')
+    return dataf</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>and finally, one that deals with the missing values in our dataframe.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-7">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">def</span> <span class="nf">remove_na</span><span class="p">(</span><span class="n">dataf</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="c1">#Fill rows with NA calories with mean.</span>
+    <span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Calories&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Calories&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">dataf</span><span class="p">[</span><span class="s1">&#39;Calories&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+    <span class="c1">#Drop any remaining rows with NA.</span>
+    <span class="n">dataf</span> <span class="o">=</span> <span class="n">dataf</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataf</span>
+</pre></div>
+<div id="cell-7" class="clipboard-copy-txt">def remove_na(dataf : pd.DataFrame) -> pd.DataFrame:
+    #Fill rows with NA calories with mean.
+    dataf['Calories'] = dataf['Calories'].fillna(dataf['Calories'].mean())
+
+    #Drop any remaining rows with NA.
+    dataf = dataf.dropna(how='any')
+    return dataf</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now we're the lucky owners of 5 functions that each can be placed in a seperate <code>.py</code> file, and then we could import the preprocessing functions as we needed them. This code is easier to maintain, easier to change (e.g. changing <code>Pulse</code> to <code>float</code>) and it's just prettier to look at.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-8">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>\
+             <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">prepare_column_names</span><span class="p">)</span>\
+             <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">clean_datestring</span><span class="p">)</span>\
+             <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">set_dtypes</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Duration&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                                      <span class="s1">&#39;Pulse&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                                      <span class="s1">&#39;Maxpulse&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                                      <span class="s1">&#39;Calories&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>\
+             <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">convert_date</span><span class="p">)</span>\
+             <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">remove_na</span><span class="p">)</span>
+
+<span class="n">df_clean</span>
+</pre></div>
+<div id="cell-8" class="clipboard-copy-txt">df_clean = df.pipe(lambda x : x.copy())\
+             .pipe(prepare_column_names)\
+             .pipe(clean_datestring)\
+             .pipe(set_dtypes, dtypes={'Duration': int, 
+                                      'Pulse': int, 
+                                      'Maxpulse': int, 
+                                      'Calories': float})\
+             .pipe(convert_date)\
+             .pipe(remove_na)
+
+df_clean</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Duration</th>
+      <th>Date</th>
+      <th>Pulse</th>
+      <th>Maxpulse</th>
+      <th>Calories</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>60</td>
+      <td>2020-12-01</td>
+      <td>110</td>
+      <td>130</td>
+      <td>409.100000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>60</td>
+      <td>2020-12-02</td>
+      <td>117</td>
+      <td>145</td>
+      <td>479.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>60</td>
+      <td>2020-12-03</td>
+      <td>103</td>
+      <td>135</td>
+      <td>340.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>60</td>
+      <td>2020-12-16</td>
+      <td>98</td>
+      <td>120</td>
+      <td>215.200000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60</td>
+      <td>2020-12-17</td>
+      <td>100</td>
+      <td>120</td>
+      <td>300.000000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>45</td>
+      <td>2020-12-18</td>
+      <td>90</td>
+      <td>112</td>
+      <td>317.727273</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>60</td>
+      <td>2020-12-21</td>
+      <td>108</td>
+      <td>131</td>
+      <td>364.200000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>60</td>
+      <td>2020-12-25</td>
+      <td>102</td>
+      <td>126</td>
+      <td>334.500000</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>60</td>
+      <td>2020-12-26</td>
+      <td>100</td>
+      <td>120</td>
+      <td>250.000000</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>60</td>
+      <td>2020-12-27</td>
+      <td>92</td>
+      <td>118</td>
+      <td>241.000000</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>60</td>
+      <td>2020-12-28</td>
+      <td>103</td>
+      <td>132</td>
+      <td>317.727273</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>60</td>
+      <td>2020-12-29</td>
+      <td>100</td>
+      <td>132</td>
+      <td>280.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>and let's just check the dtypes as well.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+        
+        
+        <div class="CodeMirror cm-s-jupyter">
+        <div class="zeroclipboard-container">
+            <clipboard-copy for="cell-9">
+            <div>
+                <span class="notice" hidden>Copied!</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 16 16" version="1.1"  data-view-component="true" class="clipboard-copy-icon">
+                    <path fill="currentColor" fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path>
+                    <path fill="currentColor" fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
+                </svg>
+                </div>
+            </clipboard-copy>
+        </div>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">df_clean</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+<div id="cell-9" class="clipboard-copy-txt">df_clean.dtypes</div>
+    
+        </div>
+    </div>
+
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>0
+Duration             int64
+Date        datetime64[ns]
+Pulse                int64
+Maxpulse             int64
+Calories           float64
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<center>
+<img src="https://i.kym-cdn.com/photos/images/newsfeed/000/591/928/94f.png" width="300">
+</center>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Thanks for reading! If want to learn more about the <code>pipe</code> method, I recommended checking out calmcode.io's tutorial <a href="https://calmcode.io/pandas-pipe/introduction.html">here</a> - they make some pretty cool decorators so they can log and time their functions!</p>
 
 </div>
 </div>
