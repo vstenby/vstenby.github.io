@@ -272,6 +272,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sweep-using-wandb/" class="md-nav__link">
+        Sweep using W&B
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1803,19 +1817,7 @@ df.head()</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>That fixed our first problem! <em>Note that I used <code>pipe(lambda x : x.copy())</code> first. If we hadn't, then it would have altered <code>df</code> itself. You can try and run the code yourself and see what happens without it.</em></p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now, let's write a function that cleans the <code>Date</code> column,</p>
+<p>That fixed our first problem! <em>Note that I used <code>pipe(lambda x : x.copy())</code> first. If we hadn't, then it would have altered <code>df</code> itself. You can try and run the code yourself and see what happens without it.</em> Now, let's write a function that cleans the <code>Date</code> column,</p>
 
 </div>
 </div>
@@ -2026,6 +2028,7 @@ df.head()</div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Now we're the lucky owners of 5 functions that each can be placed in a seperate <code>.py</code> file, and then we could import the preprocessing functions as we needed them. This code is easier to maintain, easier to change (e.g. changing <code>Pulse</code> to <code>float</code>) and it's just prettier to look at.</p>
+<p>Of course, this might be a bit of an exaggerated example - maybe some of the functions could be combined - but I hope you get the idea.</p>
 
 </div>
 </div>
@@ -2055,9 +2058,9 @@ df.head()</div>
              <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">prepare_column_names</span><span class="p">)</span>\
              <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">clean_datestring</span><span class="p">)</span>\
              <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">set_dtypes</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Duration&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
-                                      <span class="s1">&#39;Pulse&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
-                                      <span class="s1">&#39;Maxpulse&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
-                                      <span class="s1">&#39;Calories&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>\
+                                       <span class="s1">&#39;Pulse&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                                       <span class="s1">&#39;Maxpulse&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                                       <span class="s1">&#39;Calories&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>\
              <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">convert_date</span><span class="p">)</span>\
              <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">remove_na</span><span class="p">)</span>
 
@@ -2067,9 +2070,9 @@ df.head()</div>
              .pipe(prepare_column_names)\
              .pipe(clean_datestring)\
              .pipe(set_dtypes, dtypes={'Duration': int, 
-                                      'Pulse': int, 
-                                      'Maxpulse': int, 
-                                      'Calories': float})\
+                                       'Pulse': int, 
+                                       'Maxpulse': int, 
+                                       'Calories': float})\
              .pipe(convert_date)\
              .pipe(remove_na)
 
@@ -2370,13 +2373,13 @@ dtype: object</pre>
       
       
         
-        <a href="../../ds-books/designing-machine-learning-systems/" class="md-footer__link md-footer__link--next" aria-label="Next: Designing Machine Learning Systems" rel="next">
+        <a href="../sweep-using-wandb/" class="md-footer__link md-footer__link--next" aria-label="Next: Sweep using W&amp;B" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Designing Machine Learning Systems
+              Sweep using W&B
             </div>
           </div>
           <div class="md-footer__button md-icon">

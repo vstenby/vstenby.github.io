@@ -13,7 +13,7 @@
     
     
       
-        <title>Designing Machine Learning Systems - Viktor Stenby</title>
+        <title>Sweep using W&B - Viktor Stenby</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#designing-machine-learning-systems" class="md-skip">
+        <a href="#sweep-using-wb" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Designing Machine Learning Systems
+              Sweep using W&B
             
           </span>
         </div>
@@ -140,13 +140,15 @@
         
   
   
+    
+  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href="../../today-i-learned/piping-with-pandas/" class="md-tabs__link">
+      <a href="../piping-with-pandas/" class="md-tabs__link md-tabs__link--active">
         Today I Learned
       </a>
     </li>
@@ -156,15 +158,13 @@
         
   
   
-    
-  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href="./" class="md-tabs__link md-tabs__link--active">
+      <a href="../../ds-books/designing-machine-learning-systems/" class="md-tabs__link">
         Data Science Books
       </a>
     </li>
@@ -181,8 +181,6 @@
         <div class="md-main__inner md-grid">
           
             
-              
-                
               
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
@@ -226,12 +224,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
       
@@ -254,7 +254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../today-i-learned/piping-with-pandas/" class="md-nav__link">
+      <a href="../piping-with-pandas/" class="md-nav__link">
         Piping with Pandas
       </a>
     </li>
@@ -266,11 +266,21 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../today-i-learned/sweep-using-wandb/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Sweep using W&B
       </a>
+      
     </li>
   
 
@@ -288,14 +298,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
       
@@ -316,21 +324,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../ds-books/designing-machine-learning-systems/" class="md-nav__link">
         Designing Machine Learning Systems
       </a>
-      
     </li>
   
 
@@ -342,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../storytelling-with-data/" class="md-nav__link">
+      <a href="../../ds-books/storytelling-with-data/" class="md-nav__link">
         Storytelling with Data
       </a>
     </li>
@@ -364,9 +362,7 @@
             
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -391,17 +387,106 @@
                   
 
 
-<h1 id="designing-machine-learning-systems">Designing Machine Learning Systems</h1>
-<!--Read October 2022, written December 2022-->
-<p><img align="right" alt="" src="../../images/books/designing-machine-learning-systems.png" width="300px" /></p>
-<p>A while ago, I picked up <strong>Designing Machine Learning Systems: An Iterative Process for Production-Ready Applications</strong> from Amazon and just had it lying around - but once I picked it up, it was definitely a great read!</p>
-<p>If you're picking up this book with the expectation of learning some very specific tools, you are going to be dissapointed. But that's not what this book is about - it's about describing the chaotic ecosystem that is machine learning in production. </p>
-<p>While Huyen doesn't necessarily go into depth with what tools you should use, she definitely gives you some ideas as to how to structure your machine learning pipeline such that it is easier to deploy your cool models! Tips and tricks for getting labelled data, how to deal with imbalanced data were great, and in the later chapters on the importance of model monitoring, reproducability and different deployment methods, Huyen introduced ideas and concepts that I had not come across before.</p>
-<p>All in all, Designing Machine Learning Systems is a great book and it's a great read for everyone interested in machine learning, and especially for data scientists who all can benefit from good practices in software engineering!</p>
+<h1 id="sweep-using-wb">Sweep using W&amp;B</h1>
+<p>In the spring of 2022, I took the course 02460: Advanced Machine Learning at the Technical University of Denmark. In the course, we had a project about regularization of graph neural networks.</p>
+<p>Here, our model loss consisted of two terms:</p>
+<div class="arithmatex">\[\begin{equation}
+\mathcal{L} = \mathcal{L}_{\text{datafitting}} + \mu \mathcal{L}_{\text{masked p-reg}}
+\end{equation}\]</div>
+<p>Essentially, a fraction <span class="arithmatex">\(\alpha\)</span> of the training examples were masked and regularized with regularization strength <span class="arithmatex">\(\mu\)</span> using the propagation loss introduced in <a href="https://arxiv.org/abs/2009.02027">Rethinking Graph Regularization for Graph Neural Networks</a>.</p>
+<p>Given an <span class="arithmatex">\(n \times n\)</span> grid of <span class="arithmatex">\((\mu, \alpha)\)</span> values, we wanted to create the following table:</p>
+<p><center></p>
+<table>
+<thead>
+<tr>
+<th align="center"><span class="arithmatex">\(\mu\)</span></th>
+<th align="center"><span class="arithmatex">\(\alpha\)</span></th>
+<th align="center">Test accuracy (mean)</th>
+<th align="center">Test accuracy (std)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><span class="arithmatex">\(\mu_1\)</span></td>
+<td align="center"><span class="arithmatex">\(\alpha_1\)</span></td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr>
+<tr>
+<td align="center"><span class="arithmatex">\(\mu_1\)</span></td>
+<td align="center"><span class="arithmatex">\(\alpha_2\)</span></td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr>
+<tr>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+</tr>
+<tr>
+<td align="center"><span class="arithmatex">\(\mu_2\)</span></td>
+<td align="center"><span class="arithmatex">\(\alpha_1\)</span></td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr>
+<tr>
+<td align="center"><span class="arithmatex">\(\mu_2\)</span></td>
+<td align="center"><span class="arithmatex">\(\alpha_2\)</span></td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr>
+<tr>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+<td align="center"><span class="arithmatex">\(\vdots\)</span></td>
+</tr>
+<tr>
+<td align="center"><span class="arithmatex">\(\mu_n\)</span></td>
+<td align="center"><span class="arithmatex">\(\alpha_n\)</span></td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr>
+</tbody>
+</table>
+<p></center></p>
+<p>where the test accuracy was calculated for 10 different initializations of the model, trained until convergence. Now, this would have been pretty difficult to keep track of, since we wanted the <span class="arithmatex">\((\mu, \alpha)\)</span>-grid to be rather large. Entering <a href="https://wandb.ai/site">Weights &amp; Biases</a> and their <a href="https://docs.wandb.ai/guides/sweeps/quickstart">sweep</a> feature!</p>
+<p><center>
+<img src="https://assets.website-files.com/5ac6b7f2924c656f2b13a88c/5ecb633d54bd2fe1e0378852_logo%20white.png" width="500px">
+</center></p>
+<p>Having set up our training script, a <code>yaml</code> file was all that was needed to run the sweep. For example, with a <span class="arithmatex">\(3 \times 3\)</span> grid with 5 different initializations, the <code>yaml</code> file would look like this:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grid</span><span class="w"></span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">parameters</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">mu</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"></span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w"></span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w"></span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">unmask-alpha</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"></span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w"></span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w"></span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">seed</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="nt">program</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main.py</span><span class="w"></span>
+</code></pre></div></p>
+<p>Each <span class="arithmatex">\((\mu, \alpha, \text{seed})\)</span> combination would then give a test accuracy, and then the mean and standard deviations could be calculated. </p>
+<p>The best thing with sweep is that multiple <em>agents</em> can work at the same time, so if we submitted 5 GPU jobs, we would have 5 agents working on the <span class="arithmatex">\((\mu, \alpha, \text{seed})\)</span>-sweep with W&amp;B doing the bookkeeping. </p>
+<p>To produce the figure below, a total of 4000 models were trained. Without W&amp;B, this would have been a nightmare to keep track of!</p>
+<p><center>
+<img alt="" src="../../images/today-i-learned/mu_alpha.png" width="500px" />
+</center></p>
+<p>Thanks for reading! Next time you want to do a lot of ML experiments, I definitely recommend giving W&amp;B's sweep functionality a try. It's a bit of a hassle to set up, but it's definitely worth it once you have to train a lot of models.</p>
+<p>If you want to check out the code for our project, you can find it <a href="https://github.com/vstenby/02460GraphRegularization">here</a>.</p>
 
 
-
-  
 
 
 
@@ -417,12 +502,10 @@
         <footer class="md-footer">
   
     
-      
-    
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../../today-i-learned/sweep-using-wandb/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sweep using W&amp;B" rel="prev">
+        <a href="../piping-with-pandas/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Piping with Pandas" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -431,20 +514,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Sweep using W&B
+              Piping with Pandas
             </div>
           </div>
         </a>
       
       
         
-        <a href="../storytelling-with-data/" class="md-footer__link md-footer__link--next" aria-label="Next: Storytelling with Data" rel="next">
+        <a href="../../ds-books/designing-machine-learning-systems/" class="md-footer__link md-footer__link--next" aria-label="Next: Designing Machine Learning Systems" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Storytelling with Data
+              Designing Machine Learning Systems
             </div>
           </div>
           <div class="md-footer__button md-icon">
