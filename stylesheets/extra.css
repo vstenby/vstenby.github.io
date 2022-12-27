@@ -5,6 +5,6 @@
 /* Maximum space for text block */
 
 
-
-
-  
+.jupyter-wrapper table.dataframe {
+    table-layout: auto !important;
+  }
